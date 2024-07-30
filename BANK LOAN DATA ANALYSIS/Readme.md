@@ -37,7 +37,7 @@ This sheet includes the raw data collected from the bank, with the following fie
 - **Loan Delinquency**: Indicator of whether the customer has defaulted on the loan.
 
 
-![Alt text](https://github.com/animesh010-s/DATA-ANALYTCIS-PROJECTS/blob/main/BANK%20LOAN%20DATA%20ANALYSIS/Summary_Dashboard.png)
+![Alt text](https://github.com/animesh010-s/DATA-ANALYTCIS-PROJECTS/blob/main/BANK%20LOAN%20DATA%20ANALYSIS/Summary.png)
 
 
 ### Summary Dashboard
