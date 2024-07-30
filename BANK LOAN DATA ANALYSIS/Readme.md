@@ -49,7 +49,7 @@ The summary dashboard provides a quick overview of the key metrics and findings:
 - **Key Demographic Insights**: Insights into the demographics of the customers.
 
 
-![Overview Dashboard](https://github.com/animesh010-s/DATA-ANALYTCIS-PROJECTS/blob/main/BANK%20LOAN%20DATA%20ANALYSIS/Overview_dashboard.png)
+![Overview Dashboard](https://github.com/animesh010-s/DATA-ANALYTCIS-PROJECTS/blob/main/BANK%20LOAN%20DATA%20ANALYSIS/Overview.png)
 
 
 ### Overview Dashboard
