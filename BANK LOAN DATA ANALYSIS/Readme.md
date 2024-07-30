@@ -48,6 +48,10 @@ The summary dashboard provides a quick overview of the key metrics and findings:
 - **Delinquency Rates**: Percentage of loans that went delinquent.
 - **Key Demographic Insights**: Insights into the demographics of the customers.
 
+
+![Overview Dashboard](https://github.com/animesh010-s/DATA-ANALYTCIS-PROJECTS/blob/main/BANK%20LOAN%20DATA%20ANALYSIS/Overview_dashboard.png)
+
+
 ### Overview Dashboard
 
 The overview dashboard offers detailed visualizations and metrics, including:
