@@ -1,6 +1,5 @@
 # Financial Consumer Complaints Data Analysis Using Tableau Dashboard
 
-![Financial_Complaints_KPI_Analysis_Project (2)](https://user-images.githubusercontent.com/124501309/224553693-ab29f165-698d-49e6-931f-95079852d7e8.png)
 
 
 
