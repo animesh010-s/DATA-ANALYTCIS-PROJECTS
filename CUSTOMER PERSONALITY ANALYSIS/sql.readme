@@ -1,90 +1,153 @@
-# Customer Personality Analysis Project
+# Customer Personality Analysis - SQL Queries
+
+## Overview
+This repository contains SQL queries for analyzing the **Customer Personality Analysis** dataset. These queries help extract insights related to customer demographics, spending behavior, marketing campaign effectiveness, and overall customer engagement.
+
+## SQL Queries for Analysis
+
+### 1. Customer Demographics Analysis
+
+#### 1.1 Count of customers by education level
+```sql
+SELECT Education, COUNT(*) AS Total_Customers
+FROM cleaned_customer_data
+GROUP BY Education
+ORDER BY Total_Customers DESC;
+
+#### 1.2 Count of customers by marital status
+```sql
+SELECT Marital_Status, COUNT(*) AS Total_Customers
+FROM cleaned_customer_data
+GROUP BY Marital_Status
+ORDER BY Total_Customers DESC;
 
 
-## Part 1: Python Data Cleaning Script
 
-### Data Cleaning Steps
+#### 1.3 Average income by education level
+```sql
+SELECT Education, ROUND(AVG(Income), 2) AS Avg_Income
+FROM cleaned_customer_data
+GROUP BY Education
+ORDER BY Avg_Income DESC;
 
-#### 1. Drop Duplicates
-Removes any duplicate rows in the dataset.
 
-#### 2. Handle Missing Values
-- Fills missing values in numerical columns (`Income`) with the median.
-- Fills missing values in categorical columns (`Education`, `Marital_Status`) with the mode.
+#### 1.4 Count of customers by age group
+```sql
+SELECT 
+  CASE 
+    WHEN Age < 30 THEN 'Under 30'
+    WHEN Age BETWEEN 30 AND 50 THEN '30-50'
+    WHEN Age BETWEEN 51 AND 70 THEN '51-70'
+    ELSE 'Above 70'
+  END AS Age_Group,
+  COUNT(*) AS Total_Customers
+FROM cleaned_customer_data
+GROUP BY Age_Group
+ORDER BY Total_Customers DESC;
 
-#### 3. Convert Data Types
-Converts the `Dt_Customer` column to a datetime format for better manipulation.
+### 2. Spending and Purchase Analysis
 
-#### 4. Create New Features
-- `TotalChildren`: Adds a new feature representing the total number of children based on existing data.
-- `Age`: Adds a new feature representing the age of the customer.
+#### 2.1 Total amount spent by product category
+sql
+Copy
+Edit
 
-#### 5. Remove Outliers
-Caps the `Income` at the 1st and 99th percentiles to minimize the impact of outliers.
+```sql
+SELECT 
+  SUM(MntWines) AS Total_Wine_Spent,
+  SUM(MntFruits) AS Total_Fruit_Spent,
+  SUM(MntMeatProducts) AS Total_Meat_Spent,
+  SUM(MntFishProducts) AS Total_Fish_Spent,
+  SUM(MntSweetProducts) AS Total_Sweets_Spent,
+  SUM(MntGoldProds) AS Total_Gold_Spent
+FROM cleaned_customer_data;
 
-#### 6. Standardize Column Names
-Makes column names consistent and easy to use by converting them to lowercase and replacing spaces with underscores.
 
-#### 7. Drop Unnecessary Columns
-Removes columns that are constant or irrelevant to the analysis (e.g., `Z_CostContact`, `Z_Revenue`).
 
-#### 8. Encode Categorical Variables
-- Simple label encoding for binary categorical variables (`Complain`).
-- One-hot encoding for other categorical variables (e.g., `Education`, `Marital_Status`).
+#### 2.2 Average spending per customer
+```sql
+SELECT 
+  ROUND(AVG(MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds), 2) AS Avg_Spending
+FROM cleaned_customer_data;
 
-### Python Script
 
-```python
-import pandas as pd
 
-# Load the dataset
-df = pd.read_csv('customer_personality_analysis.csv')
+#### 2.4 Most preferred purchase channel
+```sql
+SELECT 
+  'Web' AS Channel, SUM(NumWebPurchases) AS Total_Purchases FROM cleaned_customer_data
+UNION
+SELECT 
+  'Catalog', SUM(NumCatalogPurchases) FROM cleaned_customer_data
+UNION
+SELECT 
+  'Store', SUM(NumStorePurchases) FROM cleaned_customer_data
+ORDER BY Total_Purchases DESC;
 
-# Basic Data Cleaning Steps
+### 3. Marketing Campaign Analysis
 
-# 1. Drop duplicates
-df.drop_duplicates(inplace=True)
+#### 3.1 Response rate for the last campaign
+```sql
+SELECT Response, COUNT(*) AS Customer_Count
+FROM cleaned_customer_data
+GROUP BY Response;
 
-# 2. Handle missing values
-# Fill missing values in 'Income' with the median
-df['Income'].fillna(df['Income'].median(), inplace=True)
 
-# Fill missing values in categorical columns with the mode
-categorical_columns = ['Education', 'Marital_Status']
-for col in categorical_columns:
-    df[col].fillna(df[col].mode()[0], inplace=True)
 
-# 3. Convert data types
-df['Dt_Customer'] = pd.to_datetime(df['Dt_Customer'])
+#### 3.2 Most successful campaign
+```sql
+SELECT 
+  'Campaign 1' AS Campaign, COUNT(*) AS Accepted FROM cleaned_customer_data WHERE AcceptedCmp1 = 1
+UNION
+SELECT 
+  'Campaign 2', COUNT(*) FROM cleaned_customer_data WHERE AcceptedCmp2 = 1
+UNION
+SELECT 
+  'Campaign 3', COUNT(*) FROM cleaned_customer_data WHERE AcceptedCmp3 = 1
+UNION
+SELECT 
+  'Campaign 4', COUNT(*) FROM cleaned_customer_data WHERE AcceptedCmp4 = 1
+UNION
+SELECT 
+  'Campaign 5', COUNT(*) FROM cleaned_customer_data WHERE AcceptedCmp5 = 1
+ORDER BY Accepted DESC;
 
-# 4. Create new features
-# Total number of children
-df['TotalChildren'] = df['Kidhome'] + df['Teenhome']
+#### 3.3 Customer complaints analysis
+```sql
+SELECT Complain, COUNT(*) AS Total_Complaints
+FROM cleaned_customer_data
+GROUP BY Complain;
 
-# Age of the customer
-current_year = pd.to_datetime('today').year
-df['Age'] = current_year - df['Year_Birth']
 
-# 5. Remove outliers
-# Cap 'Income' at the 1st and 99th percentiles
-q1 = df['Income'].quantile(0.01)
-q99 = df['Income'].quantile(0.99)
-df['Income'] = df['Income'].clip(lower=q1, upper=q99)
+### 4. Customer Behavior Analysis
 
-# 6. Standardize column names
-df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
 
-# 7. Drop unnecessary columns
-df.drop(columns=['z_costcontact', 'z_revenue'], inplace=True)
+#### 4.1 Website visits vs purchases
+SELECT 
+  ROUND(AVG(NumWebVisitsMonth), 2) AS Avg_Web_Visits,
+  ROUND(AVG(NumWebPurchases), 2) AS Avg_Web_Purchases
+FROM cleaned_customer_data;
 
-# 8. Encode categorical variables
-# Label encoding for binary columns like 'Complain'
-df['Complain'] = df['Complain'].map({0: 'No', 1: 'Yes'})
 
-# One-hot encoding for other categorical variables
-df = pd.get_dummies(df, columns=['Education', 'Marital_Status'], drop_first=True)
 
-# Save the cleaned dataset
-df.to_csv('cleaned_customer_personality_analysis.csv', index=False)
+#### 4.2 Impact of children on spending
+```sql
+SELECT TotalChildren, ROUND(AVG(MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds), 2) AS Avg_Spending
+FROM cleaned_customer_data
+GROUP BY TotalChildren
+ORDER BY TotalChildren;
 
-print("Data cleaning completed and saved as 'cleaned_customer_personality_analysis.csv'.")
+
+#### 4.3 Correlation between recency and spending
+```sql
+SELECT Recency, 
+       ROUND(AVG(MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds), 2) AS Avg_Spending
+FROM cleaned_customer_data
+GROUP BY Recency
+ORDER BY Recency;
+
+
+
+
+
+
