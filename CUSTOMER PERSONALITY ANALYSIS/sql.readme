@@ -8,14 +8,13 @@ This repository contains SQL queries for analyzing the **Customer Personality An
 ### 1. Customer Demographics Analysis
 
 #### 1.1 Count of customers by education level
-```sql
 SELECT Education, COUNT(*) AS Total_Customers
 FROM cleaned_customer_data
 GROUP BY Education
 ORDER BY Total_Customers DESC;
 
 #### 1.2 Count of customers by marital status
-```sql
+
 SELECT Marital_Status, COUNT(*) AS Total_Customers
 FROM cleaned_customer_data
 GROUP BY Marital_Status
@@ -24,7 +23,7 @@ ORDER BY Total_Customers DESC;
 
 
 #### 1.3 Average income by education level
-```sql
+
 SELECT Education, ROUND(AVG(Income), 2) AS Avg_Income
 FROM cleaned_customer_data
 GROUP BY Education
@@ -32,7 +31,7 @@ ORDER BY Avg_Income DESC;
 
 
 #### 1.4 Count of customers by age group
-```sql
+
 SELECT 
   CASE 
     WHEN Age < 30 THEN 'Under 30'
@@ -48,11 +47,7 @@ ORDER BY Total_Customers DESC;
 ### 2. Spending and Purchase Analysis
 
 #### 2.1 Total amount spent by product category
-sql
-Copy
-Edit
 
-```sql
 SELECT 
   SUM(MntWines) AS Total_Wine_Spent,
   SUM(MntFruits) AS Total_Fruit_Spent,
@@ -65,7 +60,7 @@ FROM cleaned_customer_data;
 
 
 #### 2.2 Average spending per customer
-```sql
+
 SELECT 
   ROUND(AVG(MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds), 2) AS Avg_Spending
 FROM cleaned_customer_data;
@@ -73,7 +68,7 @@ FROM cleaned_customer_data;
 
 
 #### 2.4 Most preferred purchase channel
-```sql
+
 SELECT 
   'Web' AS Channel, SUM(NumWebPurchases) AS Total_Purchases FROM cleaned_customer_data
 UNION
@@ -87,7 +82,7 @@ ORDER BY Total_Purchases DESC;
 ### 3. Marketing Campaign Analysis
 
 #### 3.1 Response rate for the last campaign
-```sql
+
 SELECT Response, COUNT(*) AS Customer_Count
 FROM cleaned_customer_data
 GROUP BY Response;
@@ -95,7 +90,7 @@ GROUP BY Response;
 
 
 #### 3.2 Most successful campaign
-```sql
+
 SELECT 
   'Campaign 1' AS Campaign, COUNT(*) AS Accepted FROM cleaned_customer_data WHERE AcceptedCmp1 = 1
 UNION
@@ -113,7 +108,7 @@ SELECT
 ORDER BY Accepted DESC;
 
 #### 3.3 Customer complaints analysis
-```sql
+
 SELECT Complain, COUNT(*) AS Total_Complaints
 FROM cleaned_customer_data
 GROUP BY Complain;
@@ -131,7 +126,6 @@ FROM cleaned_customer_data;
 
 
 #### 4.2 Impact of children on spending
-```sql
 SELECT TotalChildren, ROUND(AVG(MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds), 2) AS Avg_Spending
 FROM cleaned_customer_data
 GROUP BY TotalChildren
@@ -139,7 +133,7 @@ ORDER BY TotalChildren;
 
 
 #### 4.3 Correlation between recency and spending
-```sql
+
 SELECT Recency, 
        ROUND(AVG(MntWines + MntFruits + MntMeatProducts + MntFishProducts + MntSweetProducts + MntGoldProds), 2) AS Avg_Spending
 FROM cleaned_customer_data
